@@ -6,8 +6,8 @@ import random
 
 class Generator:
     def __init__(self, context_word=None, context_vector=None):
-    """Initiates Generator with either single word or vector, which defines the context"""
-        if(context_word == None and context_vector == None):
+        """Initiates Generator with either single word or vector, which defines the context"""
+        if context_word == None and context_vector == None:
             raise TypeError("Either `context_word` or `context_vector` argument is required.")
 
         self._context_word = context_word
