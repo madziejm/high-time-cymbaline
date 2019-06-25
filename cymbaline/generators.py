@@ -37,9 +37,9 @@ class Generator:
     def _generate_n_syllables_stich(self, n):
         stich = ""
 
-        while(n > 0):
+        while n > 0:
             word_syllables_count = random.randint(1, n)
-            if(stich != ""):
+            if stich:
                 stich += " "
             candidate_words = self.lt.n_syllables_top_related_words(syllables_count=word_syllables_count)
             stich += random.choice(candidate_words)
