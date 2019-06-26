@@ -1,3 +1,6 @@
+import re
+
+
 class LanguageToolkit:
     vowel = ("a", "ą", "e", "ę", "i", "y", "o", "u", "ó")
 
@@ -41,8 +44,6 @@ class LanguageToolkit:
         if len(self.get_syllables(word)) == 1 or len(word) < 4:
             w_end = word
         for letter in word[::-1]:
-            if letter in "/).,(_-:?% 123456789!":
-                next
             ending += letter
             if letter in self.vowel:
                 count_vowel += 1
@@ -64,4 +65,10 @@ class LanguageToolkit:
             if shorter in longer:
                 return True
 
-        return False
+    def tokenize(self, line: str) -> list:
+        line = line.lower()
+        pattern = r"\s*\w*\s*"
+        result = re.findall(pattern, line)
+        result = list(filter(lambda y: len(y), map(lambda x: x.strip(), result)))
+
+        return result
