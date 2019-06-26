@@ -7,31 +7,31 @@ class LanguageToolkit:
     def get_syllables(self, word: str) -> list:
         result = []
         syllable = ""
-        counter = 0
-        while counter < len(word):
-            if word[counter] in self.vowel:
+        character_index = 0
+        while character_index < len(word):
+            if word[character_index] in self.vowel:
                 # case: we met the one before last vowel, we add two last letters
-                if counter + 1 == len(word) - 1:
-                    syllable += word[counter]
-                    syllable += word[counter + 1]
+                if character_index + 1 == len(word) - 1:
+                    syllable += word[character_index]
+                    syllable += word[character_index + 1]
                     result.append(syllable)
                     return result
                 # case: two vowels next to each other
-                if (counter < len(word) - 1) and (word[counter + 1] in self.vowel):
-                    syllable += word[counter]
-                    syllable += word[counter + 1]
+                if (character_index < len(word) - 1) and (word[character_index + 1] in self.vowel):
+                    syllable += word[character_index]
+                    syllable += word[character_index + 1]
                     result.append(syllable)
                     syllable = ""
-                    counter += 2
+                    character_index += 2
                 else:
-                    syllable += word[counter]
+                    syllable += word[character_index]
                     result.append(syllable)
                     syllable = ""
-                    counter += 1
+                    character_index += 1
                 # case: we met consonant
             else:
-                syllable += word[counter]
-                counter += 1
+                syllable += word[character_index]
+                character_index += 1
         return result
 
     def count_syllables(self, word: str) -> int:
@@ -54,12 +54,12 @@ class LanguageToolkit:
         return w_end
 
     def does_rhyme(self, word_1: str, word_2: str, fst_word_ending: str = None) -> bool:
-        w_1_end = fst_word_ending if fst_word_ending else self.find_word_ending(word_1)
-        w_2_end = self.find_word_ending(word_2)
-        if w_1_end == w_2_end:
+        word_1_ending = fst_word_ending if fst_word_ending else self.find_word_ending(word_1)
+        word_2_ending = self.find_word_ending(word_2)
+        if word_1_ending == word_2_ending:
             return True
-        shorter = w_2_end if len(w_1_end) > len(w_2_end) else w_1_end
-        longer = w_1_end if len(w_1_end) > len(w_2_end) else w_2_end
+        shorter = word_2_ending if len(word_1_ending) > len(word_2_ending) else word_1_ending
+        longer = word_1_ending if len(word_1_ending) > len(word_2_ending) else word_2_ending
         for i in range(1, len(shorter) - 1):
             shorter = shorter[1:]
             if shorter in longer:
