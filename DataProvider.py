@@ -1,13 +1,8 @@
 import numpy as np
 from collections import defaultdict
 from cymbaline.language import LanguageToolkit
-import os
-
-
 
 class DataProvider:
-    
-    path = os.path.dirname(os.path.abspath(__file__))
 
     def __init__(self):
         self._dictvec = None
@@ -29,7 +24,7 @@ class DataProvider:
         if not self._dictvec:
             dict_poleval = {}
             counter = 0
-            with open(os.path.join(self.path,'../data/poleval_base_vectors.txt'), encoding='utf8') as f:
+            with open('poleval_base_vectors.txt', encoding='utf8') as f:
                 f.readline()
                 for line in f:
                     L = line.split()
@@ -54,7 +49,7 @@ class DataProvider:
         if not self._personal_corpora:
             tab_personal_corpora = []
             counter = 0
-            with open(os.path.join(self.path, '../data/personal_corpora.txt'), encoding='utf8') as f:
+            with open('personal_corpora.txt', encoding='utf8') as f:
                 for line in f:
                     line = line[:-3] + line[-2] #erase spaces and '/n' characters
                     tab_personal_corpora.append(line)
@@ -85,7 +80,7 @@ class DataProvider:
         '''
         if not self._teddy:
             sentences = []
-            with open(os.path.join(self.path, '../data/pan_tadeusz.txt'), encoding = 'utf8') as f:
+            with open('pan_tadeusz.txt', encoding = 'utf8') as f:
                 splitted = [line.rstrip('\n') for line in f]
                 for i in range(len(splitted)):
                     sentences.append(splitted[i])
@@ -102,7 +97,7 @@ class DataProvider:
         '''
         if not self._revenge:
             sentences=[]
-            with open(os.path.join(self.path, '../data/zemsta.txt'), encoding = "utf8") as f:
+            with open('zemsta.txt', encoding = "utf8") as f:
                 splitted = [line.rstrip('\n') for line in f]
                 for i in range(len(splitted)):
                     verse = splitted[i]
@@ -122,11 +117,12 @@ class DataProvider:
         return self._revenge
 
     def _generate_rhymes_for_sentence(self, sentence, container):
-        words = self.toolkit.tokenize(sentence)
+        words = self.toolkit.tokenize(sentence).split()
 
         for word in words:
-            ending = self.toolkit.find_word_ending(word)
-            container[ending].append(word)
+            if word not in containter:
+                ending = self.toolkit.get_ending_for_word(word)
+                container[ending].append(word)
 
     @property
     def rhymes_for_zemsta(self):
@@ -141,3 +137,11 @@ class DataProvider:
         return self._teddy_rhymes
 
         
+teddy = DataProvider()
+teddy = teddy.get_teddy()
+
+teddy = DataProvider()
+teddy = teddy.get_teddy()
+
+teddy = DataProvider()
+teddy = teddy.get_teddy()
