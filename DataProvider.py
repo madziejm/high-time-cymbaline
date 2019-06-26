@@ -1,5 +1,5 @@
 import numpy as np
-from collecions import defaultdict
+from collections import defaultdict
 from cymbaline.language import LanguageToolkit
 
 class DataProvider:
