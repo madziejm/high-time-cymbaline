@@ -16,7 +16,7 @@ class LanguageToolkit:
                     syllable += word[counter + 1]
                     result.append(syllable)
                     return result
-                # case: two vowels next to each other
+                # case: two consecutive vowels
                 if (counter < len(word) - 1) and (word[counter + 1] in self.vowel):
                     syllable += word[counter]
                     syllable += word[counter + 1]
