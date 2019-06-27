@@ -126,7 +126,10 @@ class DataProvider:
 
         for word in words:
             ending = self.toolkit.find_word_ending(word)
-            container[ending].append(word)
+            if ending in container:
+                container[ending].append(word)
+            else:
+                container[ending] = [ending]
 
     @property
     def rhymes_for_zemsta(self):
