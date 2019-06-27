@@ -18,7 +18,9 @@ class Generator:
         verse = ""
 
         while n > 0:
-            word_syllable_count = random.randint(1, n)
+            word_syllable_count = 1 if n == 1 else random.randint(2, n)
+            # else:
+            #     word_syllable_count = 
             # non-empty verse conditional
             if verse:
                 verse += " "

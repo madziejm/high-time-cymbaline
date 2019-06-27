@@ -8,6 +8,8 @@ import random
 class LanguageToolkit:
     vowel = ("a", "ą", "e", "ę", "i", "y", "o", "u", "ó")
     file_base_vectors = "data/poleval_base_vectors.txt"
+    vectors_model = gensim.models.KeyedVectors.load_word2vec_format(file_base_vectors, binary=False)
+    vectors_model.init_sims(replace=True)
 
     def __init__(self):
         # self.data_provider = DataProvider()
@@ -86,9 +88,7 @@ class LanguageToolkit:
         return result
     
     def top_related_words(self, words, top_n=20):
-        vectors_model = gensim.models.KeyedVectors.load_word2vec_format(self.file_base_vectors, binary=False)
-        vectors_model.init_sims(replace=True)
-        return vectors_model.most_similar(words, topn=top_n)
+        return map(lambda pair: pair[0], self.vectors_model.most_similar(words, topn=top_n))
 
     def n_syllable_top_related_words(self, syllable_count: int, context_words=None) -> list:
         words = self.top_related_words(words=context_words, top_n=2000)
