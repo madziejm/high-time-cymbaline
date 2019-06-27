@@ -5,36 +5,16 @@ import random
 
 
 class Generator:
-    def __init__(self, context_word=None, context_vector=None):
-        """Initiates Generator with either single word or vector, which defines the context"""
-        if context_word == None and context_vector == None:
-            raise TypeError("Either `context_word` or `context_vector` argument is required.")
+    def __init__(self, context_words):
+        """Initiates Generator with either list of words defining the context"""
+        self.context_words = context_words
+        self.lt = LanguageToolkit()
 
-        self._context_word = context_word
-        self._context_vector = context_vector
 
-        self.lt = LanguageToolkit(context_word=context_word, context_vector=context_vector)
-    
-    @property
-    def context_vector(self):
-        return self._context_vector
-
-    @context_vector.setter
-    def context_vector(self, value):
-        self.lt = LanguageToolkit(context_word=None, context_vector=value)
-
-    @property
-    def context_word(self):
-        return self._context_word
-    
-    @context_word.setter
-    def context_word(self, value):
-        self.lt = LanguageToolkit(context_word=value, context_vector=None)
-
-    def generate(self):
+    def generate(self, context_words: list) -> str:
         raise NotImplementedError("Abstract `Generator` base class method has been called.")
 
-    def _generate_n_syllables_verse(self, n):
+    def _generate_n_syllables_verse(self, n: int, context_words: list) -> str:
         verse = ""
 
         while n > 0:
@@ -42,7 +22,7 @@ class Generator:
             # non-empty verse conditional
             if verse:
                 verse += " "
-            candidate_words = self.lt.n_syllables_top_related_words(syllables_count=word_syllables_count)
+            candidate_words = self.lt.n_syllables_top_related_words(syllables_count=word_syllables_count, context_words=self.context_words)
             verse += random.choice(candidate_words)
             n -= word_syllables_count
         
@@ -51,11 +31,11 @@ class Generator:
 
 class HaikuGenerator(Generator):
 
-    def generate(self):
-        haiku = self._generate_n_syllables_verse(5)
+    def generate(self, context_words: list) -> str:
+        haiku = self._generate_n_syllables_verse(5, context_words)
         haiku += '\n'
-        haiku += self._generate_n_syllables_verse(7)
+        haiku += self._generate_n_syllables_verse(7, context_words)
         haiku += '\n'
-        haiku += self._generate_n_syllables_verse(5)
+        haiku += self._generate_n_syllables_verse(5, context_words)
         
         return haiku
