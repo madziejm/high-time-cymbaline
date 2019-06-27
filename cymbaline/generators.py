@@ -11,10 +11,10 @@ class Generator:
         self.lt = LanguageToolkit()
 
 
-    def generate(self, context_words: list) -> str:
+    def generate(self) -> str:
         raise NotImplementedError("Abstract `Generator` base class method has been called.")
 
-    def _generate_n_syllable_verse(self, n: int, context_words: list) -> str:
+    def _generate_n_syllable_verse(self, n: int) -> str:
         verse = ""
 
         while n > 0:
@@ -31,11 +31,11 @@ class Generator:
 
 class HaikuGenerator(Generator):
 
-    def generate(self, context_words: list) -> str:
-        haiku = self._generate_n_syllable_verse(5, context_words)
+    def generate(self) -> str:
+        haiku = self._generate_n_syllable_verse(5)
         haiku += '\n'
-        haiku += self._generate_n_syllable_verse(7, context_words)
+        haiku += self._generate_n_syllable_verse(7)
         haiku += '\n'
-        haiku += self._generate_n_syllable_verse(5, context_words)
+        haiku += self._generate_n_syllable_verse(5)
         
         return haiku
