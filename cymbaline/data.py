@@ -1,6 +1,6 @@
 import numpy as np
 from collections import defaultdict
-from cymbaline.language import LanguageToolkit
+from cymbaline.language import *
 import os
 
 
