@@ -3,15 +3,11 @@ import re
 import gensim
 import random
 
-from cymbaline.data import *
-
 class LanguageToolkit:
     vowel = ("a", "ą", "e", "ę", "i", "y", "o", "u", "ó")
     file_base_vectors = "data/poleval_base_vectors.txt"
-
-    def __init__(self):
-        self.data_provider = DataProvider()
-        return
+    vectors_model = gensim.models.KeyedVectors.load_word2vec_format(file_base_vectors, binary=False)
+    vectors_model.init_sims(replace=True)
 
     def get_syllables(self, word: str) -> list:
         result = []
@@ -86,20 +82,18 @@ class LanguageToolkit:
         return result
     
     def top_related_words(self, words, top_n=20):
-        vectors_model = gensim.models.KeyedVectors.load_word2vec_format(self.file_base_vectors, binary=False)
-        vectors_model.init_sims(replace=True)
-        return vectors_model.most_similar(words, topn=top_n)
+        return map(lambda pair: pair[0], self.vectors_model.most_similar(words, topn=top_n))
 
-    def n_syllable_top_related_words(self, syllable_count: int, context_words=None) -> list:
-        words = self.top_related_words(words=context_words, top_n=2000)
+    def n_syllable_top_related_words(self, syllable_count: int, context_words) -> list:
+        words = self.top_related_words(words=context_words, top_n=666)
         words = list(filter(lambda word: self.is_n_syllable(word, syllable_count), words))
-        while len(words) < 10:
-            number_of_random_verses = 42
-            random_verses = random.sample(self.data_provider.get_zemsta(), k=number_of_random_verses)
-            random_sample = ' '.join(random_verses)
-            random_words = self.tokenize(random_sample)
-            random_words = list(filter(lambda word: self.is_n_syllable(word, syllable_count), random_words))
-            words.append(random_words)
+        # while len(words) < 10:
+        #     number_of_random_verses = 42
+        #     random_verses = random.sample(self.data_provider.get_zemsta(), k=number_of_random_verses)
+        #     random_sample = ' '.join(random_verses)
+        #     random_words = self.tokenize(random_sample)
+        #     random_words = list(filter(lambda word: self.is_n_syllable(word, syllable_count), random_words))
+        #     words.append(random_words)
         return words
 
 
