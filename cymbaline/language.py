@@ -3,17 +3,11 @@ import re
 import gensim
 import random
 
-# from cymbaline.data import DataProvider
-
 class LanguageToolkit:
     vowel = ("a", "ą", "e", "ę", "i", "y", "o", "u", "ó")
     file_base_vectors = "data/poleval_base_vectors.txt"
     vectors_model = gensim.models.KeyedVectors.load_word2vec_format(file_base_vectors, binary=False)
     vectors_model.init_sims(replace=True)
-
-    def __init__(self):
-        # self.data_provider = DataProvider()
-        return
 
     def get_syllables(self, word: str) -> list:
         result = []
@@ -90,8 +84,8 @@ class LanguageToolkit:
     def top_related_words(self, words, top_n=20):
         return map(lambda pair: pair[0], self.vectors_model.most_similar(words, topn=top_n))
 
-    def n_syllable_top_related_words(self, syllable_count: int, context_words=None) -> list:
-        words = self.top_related_words(words=context_words, top_n=2000)
+    def n_syllable_top_related_words(self, syllable_count: int, context_words) -> list:
+        words = self.top_related_words(words=context_words, top_n=666)
         words = list(filter(lambda word: self.is_n_syllable(word, syllable_count), words))
         # while len(words) < 10:
         #     number_of_random_verses = 42
