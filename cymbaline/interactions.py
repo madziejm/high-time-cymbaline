@@ -36,8 +36,10 @@ class Interaction:
 
     def perform_haiku(self):
         hg = HaikuGenerator(self._values)
-
-        return hg.generate()
+        try:
+            return hg.generate()
+        except:
+            return ":/ Tym razem się nie udało. Być może nic nie wiem o tym słowie. /:"
 
     def perform_find_rhyme(self):
         rhymes = self.dataprovider.rhymes_for_personal_corpora[self._values]
